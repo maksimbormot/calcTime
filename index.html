@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#time-box{
+			text-align: center;
+			min-width: 300px;
+			margin: 0 auto;
+		}
+		#client-time{
+			font-size: 2.5em;
+		}
+		#time-box button {
+			width:300px;
+			padding: 5px 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="time-box">
+		<div id="client-time"></div>
+		<button onclick="getServerTime()">Get Time</button>
+	</div>
+	<script>
+		window.onload = function() {
+		    getServerTime();
+		};
+
+		function getServerTime(){
+			var xhr = new XMLHttpRequest();
+			var el = document.getElementById("client-time");
+			xhr.open('GET', "http://127.0.0.1:3000/get_time", true);
+			xhr.send();
+			var timeStart = new Date().getTime();
+			xhr.onreadystatechange = function() {
+				var timeEnd = new Date().getTime();
+				var avgTime = (timeEnd - timeStart)/2;
+		        if (xhr.readyState === 4) {
+		        	el.innerHTML = (timeEnd - xhr.responseText - avgTime)/1000;
+		        }
+		    }
+		}
+	</script>
+</body>
+</html>
